@@ -1,4 +1,4 @@
-<img src="image.jpg" alt="Project Image" style="width:25%;">
+<img src="image.jpg" alt="Project Image" style="width:50%;">
 
 <h1>Smart Plug Energy Monitoring Tool</h1>
 
