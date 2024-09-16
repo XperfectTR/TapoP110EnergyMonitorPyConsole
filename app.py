@@ -4,7 +4,7 @@ import datetime
 import time
 
 # P110 object creation
-p110 = PyP110.P110("192.168.3.113", "msvcr32@gmail.com", "mehmetAs1")
+p110 = PyP110.P110("IP", "email@gmail.com", "password")
 p110.handshake()
 p110.login()
 
