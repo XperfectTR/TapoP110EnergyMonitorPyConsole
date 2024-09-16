@@ -4,14 +4,14 @@ import datetime
 import time
 
 # P110 object creation
-p110 = PyP110.P110("IP", "email@gmail.com", "password")
+p110 = PyP110.P110("192.168.3.113", "msvcr32@gmail.com", "mehmetAs1")
 p110.handshake()
 p110.login()
 
 # List to store power usage data
 power_usage_data = []
 
-def update_energy_statistics(stdscr, y=2):
+def update_energy_statistics(stdscr, y=4):
     if power_usage_data:
         powers = [power for _, power in power_usage_data]
         min_power = min(powers)
@@ -37,7 +37,22 @@ def get_device_info(stdscr):
 
         update_energy_statistics(stdscr)
     except KeyError as e:
-        stdscr.addstr(4, 0, f"A KeyError occurred: {e}")
+        stdscr.addstr(5, 0, f"A KeyError occurred: {e}")
+        stdscr.refresh()
+
+def toggle_device(stdscr):
+    try:
+        device_info = p110.getDeviceInfo()
+        if device_info['device_on']:
+            p110.turnOff()
+            stdscr.addstr(3, 0, "Turning off the device...")
+        else:
+            p110.turnOn()
+            stdscr.addstr(3, 0, "Turning on the device...")
+        stdscr.refresh()
+        time.sleep(1)
+    except KeyError as e:
+        stdscr.addstr(5, 0, f"A KeyError occurred while toggling: {e}")
         stdscr.refresh()
 
 def main(stdscr):
@@ -50,7 +65,14 @@ def main(stdscr):
     while True:
         stdscr.clear()
         get_device_info(stdscr)
-        time.sleep(5)  # update every 5 seconds
+        stdscr.addstr(2, 0, "Press Enter to toggle the device.")  # Added message
+        key = stdscr.getch()
+
+        # Toggle device on Enter key press
+        if key == 10:  # Enter key ASCII code
+            toggle_device(stdscr)
+
+        time.sleep(0.1)  # update every 5 seconds
 
 # Start curses application
 curses.wrapper(main)
